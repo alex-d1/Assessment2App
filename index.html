@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Main CSS file! -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Main JavaScript FIle -->
+    <script src="js/main.js" defer></script>
+    <title>JavaScript</title>
+</head>
+
+<body>
+    <div>
+        <header class="display text-center">
+            <h1 id="random">🐱 Cat Facts</h1>
+            <p>Refresh to discover more</p>
+            <!-- P element to display error messages -->
+            <p id="error"></p>
+            <!-- Silly image to make the page look more interesting -->
+            <div class="image display">
+                <img src="./images/cat.jpg" alt="closed eye cats" style="max-width: 600px;">
+            </div>
+        </header>
+        <!-- dov to display data from the API -->
+        <div id="facts"></div>
+    </div>
+</body>
+
+</html>
