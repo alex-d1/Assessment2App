@@ -1,0 +1,21 @@
+.display {
+  width: 100%;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+.display.image {
+  background: no-repeat center/cover url(../img/placeholder.png);
+  width: 600px;
+  height: 500px;
+}
+.display #cityMap {
+  height: 300px;
+}
+
+#facts {
+  width: 100%;
+  padding: 20px;
+  text-align: justify;
+  -moz-text-align-last: left;
+       text-align-last: left;
+}/*# sourceMappingURL=style.css.map */
