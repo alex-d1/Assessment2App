@@ -10,7 +10,7 @@ const pixaBaseURL = 'https://pixabay.com/api/'
 const pixaApiKey = '40691540-3e797e9dfb04505d14334f2aa'
 
 const geoBaseURL = ''
-const geoAPIKey = ''
+const geoAPIKey = 'qTKvlimnn76FUoDd227QGneOana1wTZWf_ehfEd9bYM'
 
 // let map = L.map('cityMap').setView([0, 0], 4)
 // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -24,8 +24,8 @@ const geoAPIKey = ''
  * @param  {H.Map} map      A HERE Map instance within the application
  */
 function moveMapToBerlin(map){
-    map.setCenter({lat:52.5159, lng:13.3777});
-    map.setZoom(14);
+    map.setCenter({lat:0, lng:0});
+    map.setZoom(2);
   }
   
   /**
@@ -75,14 +75,17 @@ async function searchCityData(query) {
     try {
         
         //find item
-        let geo = await fetch(`https://geocode.search.hereapi.com/v1/geocode?limit=20&q=${query}&apiKey=qTKvlimnn76FUoDd227QGneOana1wTZWf_ehfEd9bYM`)
-        console.log(geo)
-
+        let geo = await fetch(`https://geocode.search.hereapi.com/v1/geocode?limit=20&q=${query}&apiKey=${geoAPIKey}`)
 
         let photo = await fetch(`${pixaBaseURL}?key=${pixaApiKey}&q=${query}`)
         const data = {images:await photo.json(), location:await geo.json()} //Get a list of random facts from the response
         console.log(data); //Output the list of random facts to the console
         console.log(await data.images.hits[0].largeImageURL)
+        const lat = data.location.items[0].position.lat
+        console.log(lat)
+        const lon = data.location.items[0].position.lng
+        console.log(lon)
+        // moveMap(lat,lon)
         displayData(data) //Pass the list of random facts to the displayData function
     }
     //Catch the error if it the code in the try block fails

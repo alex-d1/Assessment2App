@@ -9,7 +9,8 @@
   height: 500px;
 }
 .display #cityMap {
-  height: 300px;
+  height: 700px;
+  background: grey;
 }
 
 #facts {
@@ -18,10 +19,4 @@
   text-align: justify;
   -moz-text-align-last: left;
        text-align-last: left;
-}
-
-#map {
-  width: 95%;
-  height: 450px;
-  background: grey;
 }/*# sourceMappingURL=style.css.map */
