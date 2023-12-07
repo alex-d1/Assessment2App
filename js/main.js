@@ -1,4 +1,3 @@
-const factsDiv = document.getElementById("facts"); // Find div to display data
 const searchBox = document.getElementById('searchBox')
 const searchButton = document.getElementById('searchButton')
 const errorMessage = document.getElementById('errorMessage')

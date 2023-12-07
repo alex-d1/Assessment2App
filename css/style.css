@@ -1,6 +1,10 @@
+.container-fluid {
+  padding: 0;
+}
+
 .display {
   width: 100%;
-  padding: 10px 0 0 0;
+  padding: 0 0 0 0;
   text-align: center;
 }
 .display.image {
@@ -19,4 +23,48 @@
   text-align: justify;
   -moz-text-align-last: left;
        text-align-last: left;
+}
+
+header {
+  position: relative;
+  background-color: black;
+  min-height: 25rem;
+  width: 100%;
+  overflow: hidden;
+  background: no-repeat center/cover url(../img/hero-retro-background-placeholder.png);
+}
+
+header video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transform: translateX(-50%) translateY(-50%);
+}
+header video::-webkit-media-controls {
+  display: none !important;
+}
+
+header .container-fluid {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+}
+header .container-fluid .container {
+  position: relative;
+}
+
+@media (pointer: coarse) and (hover: none) {
+  header {
+    background: url("../img/hero-retro-background-placeholder.png") black no-repeat center center scroll;
+  }
+  header video {
+    display: none;
+  }
 }/*# sourceMappingURL=style.css.map */

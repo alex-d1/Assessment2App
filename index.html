@@ -29,33 +29,40 @@
 <body>
     <div class="container-fluid">
         <header class="display text-center">
-            <h1 id="random">🏙️ Search A City</h1>
-            <p>Landmarks and weather for any city in the world!</p>
-            <div class="input-group mb-3">
-                <input id="searchBox" type="text" class="form-control" placeholder="Type a city!" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button id="searchButton" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-              </div>
-              
-            <!-- P element to display error messages -->
-            <div id="cityMap"></div>
-            <p id="error"></p>
-            <!-- Silly image to make the page look more interesting -->
-            <!-- <div class="image display">
-            </div> -->
+            <div class="container-fluid">
             <video class="image display"
-                playsinline="playsinline"
-                autoplay="autoplay"
-                muted="muted"
-                loop="loop"
-            >
-                <source
-                src="./images/vecteezy_animated-motion-video-of-the-city-at-night-with-pink-and_30728859.MOV"
-                type="video/webm"
-                />
-            </video>
+                    playsinline="playsinline"
+                    autoplay="autoplay"
+                    muted="muted"
+                    loop="loop"
+                >
+                    <source
+                    src="./images/Vecteezy Cartoon-Background-City-With-Busy-Streets 3316280.webm"
+                    type="video/webm"
+                    />
+                </video>
+            
+
+            <div class="container">
+                <h1 id="random">🏙️ Search A City</h1>
+                <p>Landmarks and weather for any city in the world!</p>
+                <div class="input-group mb-3">
+                    <input id="searchBox" type="text" class="form-control" placeholder="Type a city!" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button id="searchButton" class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                </div>
+                <div id="cityMap"></div>
+            </div>
+                
+                
+                <!-- P element to display error messages -->
+                
+                <p id="error"></p>
+                <!-- Silly image to make the page look more interesting -->
+                <!-- <div class="image display">
+                </div> -->
+            </div>
         </header>
-        <!-- dov to display data from the API -->
-        <div id="facts"></div>
+
     </div>
 </body>
 
