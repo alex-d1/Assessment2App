@@ -2,7 +2,7 @@
 
 .display {width: 100%; padding: 0 0 0 0; text-align: center;
     &.image {background: no-repeat center/cover url(../img/placeholder.png); width: 600px; height:500px;}
-    #cityMap {height:700px; background:grey;}
+    
 }
     
 
@@ -20,7 +20,7 @@ header {
     position: relative;
     background-color: black;
     
-    min-height: 25rem;
+    min-height: 100vh;
     width: 100%;
     overflow: hidden;
     background: no-repeat center/cover
@@ -46,13 +46,28 @@ header {
      }
   }
   
-  header .container-fluid {
+  .container-fluid.main-wrapper {
     position: relative;
     z-index: 2;
-    height:100vh;
-    .container {position:relative;}
+    min-height:100vh;
+    .container {position:relative;
+      
+    }
 
   }
+
+  #mapContainer.map-content-container {
+    position: absolute;
+    bottom:0px;
+    left:0px;
+    z-index:3;
+    .imageBox {
+      min-height:13vh;
+    }
+    #cityMap {width:100%; height:50vh; background:grey;}
+  }
+
+  
   
 //   header .overlay {
 //     position: absolute;

@@ -1,6 +1,7 @@
 const searchBox = document.getElementById('searchBox')
 const searchButton = document.getElementById('searchButton')
 const errorMessage = document.getElementById('errorMessage')
+const imageBox = document.getElementById('imageBox')
 // window.addEventListener('load', searchCityData) // Adds an event listener to the window that detects the load event
 
 searchButton.addEventListener("click", search)
@@ -11,21 +12,13 @@ const pixaApiKey = '40691540-3e797e9dfb04505d14334f2aa'
 const geoBaseURL = ''
 const geoAPIKey = 'qTKvlimnn76FUoDd227QGneOana1wTZWf_ehfEd9bYM'
 
-// let map = L.map('cityMap').setView([0, 0], 4)
-// L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     maxZoom: 19,
-//     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-// }).addTo(map);
 
 /**
  * Moves the map to display over Berlin
  *
  * @param  {H.Map} map      A HERE Map instance within the application
  */
-function moveMapToBerlin(map){
-    map.setCenter({lat:0, lng:0});
-    map.setZoom(2);
-  }
+
   
   /**
    * Boilerplate map initialization code starts below:
@@ -41,8 +34,8 @@ function moveMapToBerlin(map){
   //Step 2: initialize a map - this map is centered over Europe
   var map = new H.Map(document.getElementById('cityMap'),
     defaultLayers.vector.normal.map,{
-    center: {lat:50, lng:5},
-    zoom: 4,
+    center: {lat:0, lng:0},
+    zoom: 2,
     pixelRatio: window.devicePixelRatio || 1
   });
   // add a resize listener to make sure that the map occupies the whole container
@@ -56,16 +49,13 @@ function moveMapToBerlin(map){
   // Create the default UI components
   var ui = H.ui.UI.createDefault(map, defaultLayers);
   
-  // Now use the map as required...
-  window.onload = function () {
-    moveMapToBerlin(map);
-  }
+
 //   END HERE API
 
 function search(){
     const query = searchBox.value
     searchCityData(query)
-    searchBox.value = ""
+    // searchBox.value = ""
 }
 
 //Call to the API and get a list of random cat facts
@@ -84,7 +74,11 @@ async function searchCityData(query) {
         console.log(lat)
         const lon = data.location.items[0].position.lng
         console.log(lon)
-        // moveMap(lat,lon)
+        const address = data.location.items[0].address.city
+        let weather = await fetch(`https://weather.cc.api.here.com/weather/1.0/report.json?product=observation&name=${address}&apiKey=${geoAPIKey}`)
+        const cityWeatherData = {forecast:await weather.json()}
+        console.log(cityWeatherData)
+        moveMap(map,lat,lon)
         displayData(data) //Pass the list of random facts to the displayData function
     }
     //Catch the error if it the code in the try block fails
@@ -95,6 +89,14 @@ async function searchCityData(query) {
     }
 }
 
+//Moves the map to the city typed in the search bar
+function moveMap(map,lat,lon){
+  map.setCenter({lat:lat, lng:lon});
+  map.setZoom(12);
+}
+
+
+
 //Displays the data on the page
 //Parameters: Data - The data to display from the API
 function displayData(data) {
@@ -103,6 +105,6 @@ function displayData(data) {
     for (var i = 0; i < data.images.hits.length; i++) {
         const para = document.createElement("p"); //Create a p element to display the data
         para.innerHTML = `<img src="${data.images.hits[i].largeImageURL}"></img>` //Add the first fact to the p element
-        factsDiv.appendChild(para); //Append the p element to the facts div on the page
+        imageBox.appendChild(para); //Append the p element to the facts div on the page
     }
 }
