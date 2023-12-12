@@ -88,11 +88,12 @@ async function searchCityData(query) {
         const lon = data.location.items[0].position.lng
         console.log(lon)
         const address = data.location.items[0].address.city
-        let weather = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${weatherAPIKey}`)
+        let weather = await fetch(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lon}&key=${weatherAPIKey}`)
         const cityWeatherData = {forecast:await weather.json()}
         console.log(cityWeatherData)
         moveMap(map,lat,lon)
         displayData(data) //Pass the list of random facts to the displayData function
+        landmarkData(lat,lon)
     }
     //Catch the error if it the code in the try block fails
     catch (error) {
@@ -130,4 +131,13 @@ function displayData(data) {
       }, 4000)
     }
     
+}
+
+async function landmarkData(lat,lon) {
+  let landmarks = await fetch(`https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${geoAPIKey}&mode=retrieveLandmarks&prox=${lat},${lon},1000`)
+  console.log(landmarks)
+}
+
+async function weatherData(weather) {
+  
 }

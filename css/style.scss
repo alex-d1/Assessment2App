@@ -62,10 +62,13 @@ header {
 
   
   
-  #mapContainer.map-content-container {
+  #mapContainer.map-content-container {position:relative;
     
     
-    #cityMap {width:100%; height:75vh; background:grey;}
+    #cityMap {width:100%; height:75vh; background:grey; 
+      > div {border-radius: var(--bs-border-radius) !important;}
+    }
+    .weather {position:absolute; top:10px; right:20px;}
   }
 
 
