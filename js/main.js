@@ -1,3 +1,11 @@
+
+// add event listener for initial layout
+// msnry.on( 'layoutComplete', function( items ) {
+//   msnry.layout();
+// });
+// trigger initial layout
+
+
 const searchBox = document.getElementById('searchBox')
 const searchButton = document.getElementById('searchButton')
 const errorMessage = document.getElementById('errorMessage')
@@ -11,6 +19,11 @@ const pixaApiKey = '40691540-3e797e9dfb04505d14334f2aa'
 
 const geoBaseURL = ''
 const geoAPIKey = 'qTKvlimnn76FUoDd227QGneOana1wTZWf_ehfEd9bYM'
+
+const weatherBaseURL = ''
+const weatherAPIKey = 'fb879606d40b4356bc0535afa14c649d'
+
+
 
 
 /**
@@ -66,7 +79,7 @@ async function searchCityData(query) {
         //find item
         let geo = await fetch(`https://geocode.search.hereapi.com/v1/geocode?limit=20&q=${query}&apiKey=${geoAPIKey}`)
 
-        let photo = await fetch(`${pixaBaseURL}?key=${pixaApiKey}&q=${query}`)
+        let photo = await fetch(`${pixaBaseURL}?key=${pixaApiKey}&q=${query}&image_type=photo&per_page=40`)
         const data = {images:await photo.json(), location:await geo.json()} //Get a list of random facts from the response
         console.log(data); //Output the list of random facts to the console
         console.log(await data.images.hits[0].largeImageURL)
@@ -75,7 +88,7 @@ async function searchCityData(query) {
         const lon = data.location.items[0].position.lng
         console.log(lon)
         const address = data.location.items[0].address.city
-        let weather = await fetch(`https://weather.cc.api.here.com/weather/1.0/report.json?product=observation&name=${address}&apiKey=${geoAPIKey}`)
+        let weather = await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lon}&key=${weatherAPIKey}`)
         const cityWeatherData = {forecast:await weather.json()}
         console.log(cityWeatherData)
         moveMap(map,lat,lon)
@@ -100,11 +113,21 @@ function moveMap(map,lat,lon){
 //Displays the data on the page
 //Parameters: Data - The data to display from the API
 function displayData(data) {
+  
     //Loop over the array of random facts 
 
     for (var i = 0; i < data.images.hits.length; i++) {
-        const para = document.createElement("p"); //Create a p element to display the data
-        para.innerHTML = `<img src="${data.images.hits[i].largeImageURL}"></img>` //Add the first fact to the p element
-        imageBox.appendChild(para); //Append the p element to the facts div on the page
+        let col = document.createElement("div") //Create a div element to display the data
+        col.classList.add("col-3", "p-0")
+        col.innerHTML = `<img src="${data.images.hits[i].largeImageURL}"></img>` //Add the first fact to the p element
+        imageBox.appendChild(col); //Append the p element to the facts div on the page
+        setTimeout(() => {
+        var msnry = new Masonry( '#imageBox', {
+          percentPosition: true,
+          // disable initial layout
+          
+        });
+      }, 4000)
     }
+    
 }
