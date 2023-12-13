@@ -61,6 +61,26 @@ const weatherAPIKey = 'fb879606d40b4356bc0535afa14c649d'
   
   // Create the default UI components
   var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+  // Get an instance of the search service:
+  var service = platform.getSearchService();
+
+  // Call the "autosuggest" method with the search parameters,
+  // the callback and an error callback function (called if a
+  // communication error occurs):
+  service.autosuggest({
+    // Search query
+    q: 'Chicago ORD',
+    // Center of the search context
+    at: '38.71014896078624,-98.60787954719035'
+  }, (result) => {
+    let {position, title} = result.items[0];
+    // Assumption: ui is instantiated
+    // Create an InfoBubble at the returned location
+    ui.addBubble(new H.ui.InfoBubble(position, {
+      content: title
+    }));
+  }, alert);
   
 
 //   END HERE API
@@ -71,7 +91,7 @@ function search(){
     // searchBox.value = ""
 }
 
-//Call to the API and get a list of random cat facts
+//Call to the API's and display the information
 async function searchCityData(query) {
     //Try and run the following code
     try {
@@ -94,6 +114,7 @@ async function searchCityData(query) {
         moveMap(map,lat,lon)
         displayData(data) //Pass the list of random facts to the displayData function
         landmarkData(lat,lon)
+        displayWeatherData(cityWeatherData)
     }
     //Catch the error if it the code in the try block fails
     catch (error) {
@@ -134,10 +155,46 @@ function displayData(data) {
 }
 
 async function landmarkData(lat,lon) {
-  let landmarks = await fetch(`https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${geoAPIKey}&mode=retrieveLandmarks&prox=${lat},${lon},1000`)
-  console.log(landmarks)
+  // let landmarks = await fetch(`https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${geoAPIKey}&mode=retrieveLandmarks&prox=${lat},${lon},1000`)
+  // console.log(landmarks)
+
+  // Call the reverse geocode method with the geocoding parameters,
+// the callback and an error callback function (called if a
+// communication error occurs):
+service.reverseGeocode({
+  prox: `${lat},${lon},1000`,
+  mode: 'retrieveLandmarks'
+}, (result) => {
+  result.items.forEach((item) => {
+    // Assumption: ui is instantiated
+    // Create an InfoBubble at the returned location with
+    // the address as its contents:
+    ui.addBubble(new H.ui.InfoBubble(item.position, {
+      content: item.address.label
+    }));
+  });
+}, alert);
 }
 
-async function weatherData(weather) {
+async function displayWeatherData(cityWeatherData) {
+  const wCityName = document.getElementById("wCityName")
+  wCityName.innerHTML = cityWeatherData.forecast.data[0].city_name
   
+  const wCityTime = document.getElementById("wCityTime")
+  wCityTime.innerHTML = cityWeatherData.forecast.data[0].city_name
+
+  const wCityTemp = document.getElementById("wCityTemp")
+  wCityTemp.innerHTML = `${cityWeatherData.forecast.data[0].app_temp}°C`
+
+  const wCityCondition = document.getElementById("wCityCondition")
+  wCityCondition.innerHTML = cityWeatherData.forecast.data[0].weather.description
+
+  const wCityWind = document.getElementById("wCityWind")
+  wCityWind.innerHTML = `${cityWeatherData.forecast.data[0].wind_spd} km/h`
+
+  const wCityRain = document.getElementById("wCityRain")
+  wCityRain.innerHTML = `${cityWeatherData.forecast.data[0].rh}%`
+
+  const wCityIcon = document.getElementById("wCityIcon")
+  wCityIcon.innerHTML = `<img src="../images/w_icons/${cityWeatherData.forecast.data[0].weather.icon}.png"></img>`
 }
