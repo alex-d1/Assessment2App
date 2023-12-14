@@ -13,14 +13,6 @@
   height: 500px;
 }
 
-#facts {
-  width: 100%;
-  padding: 20px;
-  text-align: justify;
-  -moz-text-align-last: left;
-       text-align-last: left;
-}
-
 header {
   position: relative;
   background-color: black;
@@ -62,8 +54,39 @@ header video::-webkit-media-controls {
   z-index: 2;
   min-height: 100vh;
 }
+#headerText.searchClicked h1, #headerText.searchClicked p {
+  animation: fade-out 0.7s ease-out forwards;
+}
+#headerText .container {
+  min-height: 50vh;
+  transition: height 1s ease;
+}
+#headerText .container #searchButton:hover {
+  animation: bounce 2s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+#headerText.searchClicked .container {
+  min-height: 15vh;
+  transition: all 1s ease-out;
+}
+#headerText.searchClicked .container #buttonContainer {
+  transition: all 1s ease-out;
+}
+
 #mapContainer.map-content-container {
   position: relative;
+  transition: all 1s ease-out;
 }
 #mapContainer.map-content-container #cityMap {
   width: 100%;
@@ -77,8 +100,44 @@ header video::-webkit-media-controls {
   position: absolute;
   top: 10px;
   right: 20px;
+  opacity: 0;
+  transition: all 1s ease-out;
 }
 
+#loadingSpinner {
+  z-index: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-50%);
+  animation: fade-out 0.7s ease-out forwards;
+}
+#loadingSpinner.loading {
+  animation: fade-in 0.7s ease-in forwards;
+  z-index: 4;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 1;
+    display: block;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
 @media (pointer: coarse) and (hover: none) {
   header {
     background: url("../img/hero-retro-background-placeholder.png") black no-repeat center center scroll;

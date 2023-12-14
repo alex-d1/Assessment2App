@@ -10,9 +10,15 @@ const searchBox = document.getElementById('searchBox')
 const searchButton = document.getElementById('searchButton')
 const errorMessage = document.getElementById('errorMessage')
 const imageBox = document.getElementById('imageBox')
+const mapContainer = document.getElementById('mapContainer')
+const errorBox = document.getElementById("error"); // Find the P element with the ID of error
+const pageLoading = document.getElementById("loadingSpinner"); // Loading spinner displayed when api is fetching
 // window.addEventListener('load', searchCityData) // Adds an event listener to the window that detects the load event
 
-searchButton.addEventListener("click", search)
+// this function returns a promise that resolves after n milliseconds
+const wait = (n) => new Promise((resolve) => setTimeout(resolve, n));
+
+searchButton.addEventListener("click", search) //Add click event listener to search button
 
 const pixaBaseURL = 'https://pixabay.com/api/'
 const pixaApiKey = '40691540-3e797e9dfb04505d14334f2aa'
@@ -85,24 +91,36 @@ const weatherAPIKey = 'fb879606d40b4356bc0535afa14c649d'
 
 //   END HERE API
 
+// The function that attempts to validate the text entry, starts the APIs and changes the visuals on the page
 function search(){
+  // Very basic textbox validation
+  if (searchBox.value == "") {
+    
+    errorBox.innerHTML = "The search box is empty!"
+    return
+  } else {
+    errorBox.innerHTML = ""
+    document.getElementById("headerText").classList.add("searchClicked")
+    document.getElementById("headerText").onanimationend = () => {document.getElementById("headerH").style.display='none'}
+    pageLoading.classList.add("loading")
     const query = searchBox.value
     searchCityData(query)
-    // searchBox.value = ""
+  }
 }
 
 //Call to the API's and display the information
 async function searchCityData(query) {
     //Try and run the following code
     try {
+
+        
         
         //find item
         let geo = await fetch(`https://geocode.search.hereapi.com/v1/geocode?limit=20&q=${query}&apiKey=${geoAPIKey}`)
 
         let photo = await fetch(`${pixaBaseURL}?key=${pixaApiKey}&q=${query}&image_type=photo&per_page=40`)
         const data = {images:await photo.json(), location:await geo.json()} //Get a list of random facts from the response
-        console.log(data); //Output the list of random facts to the console
-        console.log(await data.images.hits[0].largeImageURL)
+        displayData(data) //Pass the list of random facts to the displayData function
         const lat = data.location.items[0].position.lat
         console.log(lat)
         const lon = data.location.items[0].position.lng
@@ -112,15 +130,24 @@ async function searchCityData(query) {
         const cityWeatherData = {forecast:await weather.json()}
         console.log(cityWeatherData)
         moveMap(map,lat,lon)
-        displayData(data) //Pass the list of random facts to the displayData function
+        
         landmarkData(lat,lon)
         displayWeatherData(cityWeatherData)
+
+        await wait(10000)
+        mapContainer.classList.remove("visually-hidden")
+        await wait(3000)
+        pageLoading.classList.remove("loading")
+        map.getViewPort().resize()
+        await wait(3000)
+        document.getElementById("weatherCard").style.opacity='100'
+        
+        
     }
     //Catch the error if it the code in the try block fails
     catch (error) {
         console.log(error); //Output the error to the console
-        const p = document.getElementById("error"); // Find the P element with the ID of error
-        p.innerHTML = "Sorry there's an error! 🤕" // Displays a error message
+        errorBox.innerHTML = "Sorry there's an error! 🤕" // Displays a error message
     }
 }
 
@@ -134,7 +161,7 @@ function moveMap(map,lat,lon){
 
 //Displays the data on the page
 //Parameters: Data - The data to display from the API
-function displayData(data) {
+async function displayData(data) {
   
     //Loop over the array of random facts 
 
@@ -143,13 +170,14 @@ function displayData(data) {
         col.classList.add("col-3", "p-0")
         col.innerHTML = `<img src="${data.images.hits[i].largeImageURL}"></img>` //Add the first fact to the p element
         imageBox.appendChild(col); //Append the p element to the facts div on the page
-        setTimeout(() => {
+        await wait(500)
+        
         var msnry = new Masonry( '#imageBox', {
           percentPosition: true,
           // disable initial layout
           
         });
-      }, 4000)
+      
     }
     
 }
@@ -161,19 +189,20 @@ async function landmarkData(lat,lon) {
   // Call the reverse geocode method with the geocoding parameters,
 // the callback and an error callback function (called if a
 // communication error occurs):
-service.reverseGeocode({
-  prox: `${lat},${lon},1000`,
-  mode: 'retrieveLandmarks'
-}, (result) => {
-  result.items.forEach((item) => {
-    // Assumption: ui is instantiated
-    // Create an InfoBubble at the returned location with
-    // the address as its contents:
-    ui.addBubble(new H.ui.InfoBubble(item.position, {
-      content: item.address.label
-    }));
-  });
-}, alert);
+// service.reverseGeocode({
+//   in: `circle,${lat},${lon},1000`,
+//   mode: 'retrieveLandmarks' 
+// }, (result) => {
+//   console.log(result)
+//   result.items.forEach((item) => {
+//     // Assumption: ui is instantiated
+//     // Create an InfoBubble at the returned location with
+//     // the address as its contents:
+//     ui.addBubble(new H.ui.InfoBubble(item.position, {
+//       content: item.address.label
+//     }));
+//   });
+// }, alert);
 }
 
 async function displayWeatherData(cityWeatherData) {
@@ -181,7 +210,9 @@ async function displayWeatherData(cityWeatherData) {
   wCityName.innerHTML = cityWeatherData.forecast.data[0].city_name
   
   const wCityTime = document.getElementById("wCityTime")
-  wCityTime.innerHTML = cityWeatherData.forecast.data[0].city_name
+  const cTimeDate = cityWeatherData.forecast.data[0].ob_time
+  const convertedTime = cTimeDate.split(" ")
+  wCityTime.innerHTML = convertedTime[1]
 
   const wCityTemp = document.getElementById("wCityTemp")
   wCityTemp.innerHTML = `${cityWeatherData.forecast.data[0].app_temp}°C`
@@ -192,8 +223,8 @@ async function displayWeatherData(cityWeatherData) {
   const wCityWind = document.getElementById("wCityWind")
   wCityWind.innerHTML = `${cityWeatherData.forecast.data[0].wind_spd} km/h`
 
-  const wCityRain = document.getElementById("wCityRain")
-  wCityRain.innerHTML = `${cityWeatherData.forecast.data[0].rh}%`
+  const wCityHumid = document.getElementById("wCityHumid")
+  wCityHumid.innerHTML = `${cityWeatherData.forecast.data[0].rh}%`
 
   const wCityIcon = document.getElementById("wCityIcon")
   wCityIcon.innerHTML = `<img src="../images/w_icons/${cityWeatherData.forecast.data[0].weather.icon}.png"></img>`

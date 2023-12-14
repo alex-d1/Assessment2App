@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstap CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <!-- Here API css and scripts -->
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
@@ -14,13 +14,7 @@
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <!-- Masonry  -->
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-    <!-- Leaflet Script and Stylesheet -->
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script> -->
+
     <!-- font awesome icons -->
      <script src="https://kit.fontawesome.com/71ebbb8c33.js" crossorigin="anonymous"></script>
     <!-- Main CSS file! -->
@@ -31,88 +25,101 @@
 </head>
 
 <body>
+    <!-- Main wrapper start -->
     <div class="container-fluid main-wrapper">
         <header class="display text-center">
             <div class="container-fluid">
-            <video class="image display"
-                    playsinline="playsinline"
-                    autoplay="autoplay"
-                    muted="muted"
-                    loop="loop"
-                >
-                    <source
-                    src="./images/Vecteezy Cartoon-Background-City-With-Busy-Streets 3316280.webm"
-                    type="video/webm"
-                    />
-                </video>
+                <!-- This is the animated background -->
+                <video class="image display"
+                        playsinline="playsinline"
+                        autoplay="autoplay"
+                        muted="muted"
+                        loop="loop"
+                    >
+                        <source
+                        src="./images/Vecteezy Cartoon-Background-City-With-Busy-Streets 3316280.webm"
+                        type="video/webm"
+                        />
+                    </video>
             
-
+            <!-- Container for the pixabay images that construct a masonry background -->
             <div id="imageContainer" class="container-fluid text-center overflow-hidden z-0">
               <div data-masonry='{"percentPosition": true }' id="imageBox" class="row">
                   
           
               </div>
-        
             </div>
 
-            <div class="container-fluid text-wrapper z-3 position-relative">
-                <div class="container z-3">
-                    <h1 id="random" class="z-3">🏙️ Search A City</h1>
-                    <p class="z-3">Landmarks and weather for any city in the world!</p>
-                    <div class="input-group mb-3">
+            <!-- Header text and search box start -->
+            <div id="headerText" class="container-fluid text-wrapper z-3 position-relative">
+                <div class="container z-3 d-flex flex-column justify-content-center">
+                    <h1 id="headerH" class="z-3 display-1 fw-bold">🏙️ Search A City</h1>
+                    <p id="headerP" class="z-3 display-6">Find landmarks and weather for any city in the world!</p>
+                    <!-- <div class="input-group mb-3">
                         <input id="searchBox" type="text" class="form-control" placeholder="Type a city!" aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button id="searchButton" class="btn btn-outline-secondary bg-white text-black" type="button" id="button-addon2">Search</button>
+                    </div> -->
+                    <div id="buttonContainer" class="p-1 bg-light rounded rounded-pill shadow-sm mb-4 button-wrap mt-auto">
+                        <div class="input-group">
+                          <input id="searchBox" type="search" placeholder="Start typing any city" aria-describedby="searchButton" class="form-control border-0 bg-light fs-1 bg-transparent">
+                          <div class="input-group-append">
+                            <button id="searchButton" type="submit" class="btn btn-link text-primary h-100"><i class="fa fa-search fs-1"></i></button>
+                          </div>
+                        </div>
                     </div>
                 </div>
                 
                 
-                
                 <!-- P element to display error messages -->
-                
                 <p id="error"></p>
-                <!-- Silly image to make the page look more interesting -->
             </div>
+            <!-- Header text and search box end -->
 
             
 
-            <div id="mapContainer" class="map-content-container container text-center">
+            
+            <!-- Map container start -->
+            <div id="mapContainer" class="map-content-container container text-center visually-hidden">
               <div class="row">
                 <div class="col">
                   <div id="cityMap" class="rounded-2"></div>
-                    <div class="weather card rounded-2 bg-white bg-opacity-25" style="color: #4B515D;">
+
+                    <!-- Weather card start -->
+                    <div id="weatherCard" class="weather card rounded-2 bg-white bg-opacity-25" style="color: #4B515D;">
                         <div class="card-body p-4">
                 
                             <div class="d-flex">
-                            <h6 id="wCityName" class="flex-grow-1">Warsaw</h6>
-                            <h6 id="wCityTime">15:07</h6>
+                                <h6 id="wCityName" class="flex-grow-1"></h6>
+                                <h6 id="wCityTime"></h6>
                             </div>
                 
                             <div class="d-flex flex-column text-center mt-5 mb-4">
-                            <h6 id="wCityTemp" class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> 13°C </h6>
-                            <span id="wCityCondition" class="small" style="color: #868B94">Stormy</span>
+                                <h6 id="wCityTemp" class="display-4 mb-0 font-weight-bold" style="color: #1C2331;">  </h6>
+                                <span id="wCityCondition" class="small" style="color: #868B94"></span>
                             </div>
                 
                             <div class="d-flex align-items-center">
-                            <div class="flex-grow-1 text-start" style="font-size: 1rem;">
-                                <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span id="wCityWind" class="ms-1"> 40 km/h
-                                </span></div>
-                                <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i></ion-icon> <span id="wCityRain" class="ms-1"> 84% </span>
+                                <div class="flex-grow-1 text-start" style="font-size: 1rem;">
+                                    <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span id="wCityWind" class="ms-1"> 
+                                    </span></div>
+                                    <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i></ion-icon> <span id="wCityHumid" class="ms-1">  </span>
+                                    </div>
+                                    <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1">  </span>
+                                    </div>
                                 </div>
-                                <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1"> 0.2h </span>
+                                <div id="wCityIcon">
+                                    
                                 </div>
-                            </div>
-                            <div id="wCityIcon">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu1.webp"
-                                width="100px">
-                            </div>
                             </div>
                 
                         </div>
-                        </div>
+                    </div>
+                    <!-- Weather card end -->
                   
                 </div>
               </div>
             </div>
+            <!-- Map container end -->
       
       
                 
@@ -120,12 +127,21 @@
                 
             </div>
         </header>
+        <!-- Contact page overlay -->
         <section class="visually-hidden">
             <h2>Contact</h2>
             <p>email</p>
         </section>
 
+        <!-- Loading spinner -->
+        <div id="loadingSpinner" class="d-flex justify-content-center">
+            <div class="spinner-border" style="width: 5rem; height: 5rem; border-width: 1rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
     </div>
+    <!-- Main wrapper end -->
 </body>
 
 </html>

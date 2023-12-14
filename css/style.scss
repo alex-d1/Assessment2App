@@ -6,12 +6,7 @@
 }
     
 
-#facts {
-    width: 100%;
-    padding: 20px;
-    text-align: justify;
-    text-align-last: left;
-}
+
 
 
 // VIDEO BACKGROUND START
@@ -46,9 +41,9 @@ header {
      }
   }
 
-  #imageContainer {position:absolute; top:0px; left:0px; height:100vh;
+  #imageContainer {position:absolute; top:0px; left:0px; height:100vh; 
     #imageBox {
-      img {width:100%;}
+      img {width:100%; }
     }
   }
   
@@ -57,33 +52,78 @@ header {
     z-index: 2;
     min-height:100vh;
     .text-wrapper {}
+    
+  }
+
+  #headerText {
+    &.searchClicked h1, &.searchClicked p {animation: fade-out 0.7s ease-out forwards;}
+    .container {min-height:50vh; transition: height 1s ease;
+      #searchButton {
+        &:hover {animation: bounce 2s ease infinite;}
+      }
+    }
+  }
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-15px);}
+    60% {transform: translateY(-5px);}
+  }
+  #headerText.searchClicked .container {min-height:15vh; transition: all 1s ease-out;
+    #buttonContainer {transition: all 1s ease-out;}
+  }
+
+  #buttonContainer.button-wrap {
 
   }
 
   
   
-  #mapContainer.map-content-container {position:relative;
+  #mapContainer.map-content-container {position:relative; transition: all 1s ease-out;
     
     
     #cityMap {width:100%; height:75vh; background:grey; 
       > div {border-radius: var(--bs-border-radius) !important;}
     }
-    .weather {position:absolute; top:10px; right:20px;}
+    .weather {position:absolute; top:10px; right:20px; opacity: 0; transition: all 1s ease-out; }
   }
 
+  #loadingSpinner {
+    z-index:0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    animation: fade-out 0.7s ease-out forwards;
+    &.loading {animation: fade-in 0.7s ease-in forwards; z-index:4;}
+  }
 
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      display: none;
+    }
   
+    100% {
+      opacity: 1;
+      display: block;
+    }
+  }
   
-//   header .overlay {
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     height: 100%;
-//     width: 100%;
-//     background-color: black;
-//     opacity: 0.5;
-//     z-index: 1;
-//   }
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+      display: block;
+    }
+  
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
   
   @media (pointer: coarse) and (hover: none) {
     header {
