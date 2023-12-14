@@ -84,6 +84,13 @@ header video::-webkit-media-controls {
   transition: all 1s ease-out;
 }
 
+#modalButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+}
+
 #mapContainer.map-content-container {
   position: relative;
   transition: all 1s ease-out;
@@ -140,7 +147,7 @@ header video::-webkit-media-controls {
 }
 @media (pointer: coarse) and (hover: none) {
   header {
-    background: url("../img/hero-retro-background-placeholder.png") black no-repeat center center scroll;
+    background: url("../img/hero-background-placeholder.png") black no-repeat center center scroll;
   }
   header video {
     display: none;

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <!-- Here API css and scripts -->
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
@@ -25,6 +26,29 @@
 </head>
 
 <body>
+    <!-- Contact page modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-2" id="exampleModalLabel">Contact and Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <p>
+                    email: example@gmail.com
+                    
+
+                </p>
+                <p>company: Example Company</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Main wrapper start -->
     <div class="container-fluid main-wrapper">
         <header class="display text-center">
@@ -41,10 +65,16 @@
                         type="video/webm"
                         />
                     </video>
+
+            <!-- Button trigger modal -->
+            <button id="modalButton" type="button" class="btn btn-info rounded-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Contact
+            </button>
+  
             
             <!-- Container for the pixabay images that construct a masonry background -->
             <div id="imageContainer" class="container-fluid text-center overflow-hidden z-0">
-              <div data-masonry='{"percentPosition": true }' id="imageBox" class="row">
+              <div id="imageBox" class="row">
                   
           
               </div>
@@ -73,9 +103,8 @@
                 <!-- P element to display error messages -->
                 <p id="error"></p>
             </div>
-            <!-- Header text and search box end -->
-
-            
+            <!-- Header text and search box end -->       
+             
 
             
             <!-- Map container start -->
@@ -85,7 +114,7 @@
                   <div id="cityMap" class="rounded-2"></div>
 
                     <!-- Weather card start -->
-                    <div id="weatherCard" class="weather card rounded-2 bg-white bg-opacity-25" style="color: #4B515D;">
+                    <div id="weatherCard" class="weather card rounded-2 bg-white bg-opacity-50" style="color: #4B515D;">
                         <div class="card-body p-4">
                 
                             <div class="d-flex">
@@ -104,8 +133,8 @@
                                     </span></div>
                                     <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i></ion-icon> <span id="wCityHumid" class="ms-1">  </span>
                                     </div>
-                                    <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1">  </span>
-                                    </div>
+                                    <!-- <div><i class="fas fa-sun fa-fw" style="color: #868B94;"></i> <span class="ms-1">  </span>
+                                    </div> -->
                                 </div>
                                 <div id="wCityIcon">
                                     
@@ -127,11 +156,9 @@
                 
             </div>
         </header>
-        <!-- Contact page overlay -->
-        <section class="visually-hidden">
-            <h2>Contact</h2>
-            <p>email</p>
-        </section>
+        
+        
+  
 
         <!-- Loading spinner -->
         <div id="loadingSpinner" class="d-flex justify-content-center">
